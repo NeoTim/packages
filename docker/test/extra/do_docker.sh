@@ -40,6 +40,65 @@ if [[ $STATIC == "yes" ]]; then
     do_Install_Analyser
     do_Shrink_Image
 
+elif [[ $DEV == "buildstream" ]]; then
+
+    if [[ $1 == "GET_FILES" ]]; then
+#### do_Install_Dependencies
+  #  dnf install -y lzip
+  #  dnf install -y fuse ostree bubblewrap git \
+  #             python3 python3-pip python3-gobject python3-psutil
+
+  #  git clone --depth 1 https://gitlab.com/BuildStream/buildstream.git
+  #  cd buildstream
+  #  pip3 install --user .
+  #  export PATH="${PATH}:${HOME}/.local/bin"
+  #  cd -
+
+#### do_Get_BuildStream
+    echo
+    echo '-- Download JHBuild --'
+
+    git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-build-meta.git /BuildStream
+
+    cd /BuildStream
+
+    echo '-- Done --'
+
+#### do_Configure_BuildStream
+    echo
+    echo '-- Set BuildStream Configuration --'
+
+    mkdir -p ~/.config
+
+    cat <<EOF > ~/.config/buildstream.conf
+# Reduces the amount of necessary rebuilds
+projects:
+  gnome:
+    strict: False
+
+# Control the number of allowed parallel builds
+scheduler:
+  builders: 2
+EOF
+
+    echo '-- Done --'
+
+#### do_Build
+    #bst build --track-all core-deps/gjs.bst
+    #bst track --deps core-deps/gjs.bst
+
+    bst track   core-deps/yelp-xsl.bst
+    bst track      core-deps/yelp-tools.bst
+    bst track      core-deps/gtk-doc.bst
+    bst track      core-deps/glib.bst
+    bst track      core-deps/gobject-introspection.bst
+    bst track      core-deps/mozjs52.bst
+    bst track      core-deps/gjs.bst
+
+    #bst build core-deps/gjs.bst
+    bst build core-deps/mozjs52.bst
+    fi
+
 elif [[ $1 == "BUILD_MOZ" ]]; then
     do_Install_Base_Dependencies
     do_Set_Env
