@@ -17,8 +17,9 @@ env:
 
 matrix:
   include:
-  - env: IMAGE=fedora:rawhide BASE=fedora NAME=meu-SM52-gcc.fedora-dev REPO=claudioandre/spidermonkey DEV=devel STATIC=moz52 CC=gcc
-  - env: IMAGE=ubuntu:devel   BASE=debian NAME=meu-SM52-gcc.ubuntu-dev REPO=claudioandre/spidermonkey DEV=devel STATIC=moz52 CC=gcc
+  #- env: IMAGE=fedora:rawhide BASE=fedora NAME=meu-SM52-gcc.fedora-dev REPO=claudioandre/spidermonkey DEV=devel STATIC=moz52 CC=gcc
+  #- env: IMAGE=ubuntu:devel   BASE=debian NAME=meu-SM52-gcc.ubuntu-dev REPO=claudioandre/spidermonkey DEV=devel STATIC=moz52 CC=gcc
+  - env: IMAGE=fedora:rawhide BASE=fedora NAME=fedora.dev          REPO=claudioandre/settings     DEV=devel STATIC=settings CC=gcc
 
 script:
   - cd docker
